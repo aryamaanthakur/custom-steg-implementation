@@ -33,7 +33,7 @@ def hide(img, msg, msg_end="#steg-end#"):
     return new_img
 
 img = im.open("test/test.png", "r")
-new_img = hide(img, "Hello cyberlabs")
+new_img = hide(img, r"gunnHacks{abcdefgasdmfalsjdflaskjdflkdf}")
 new_img.save("test/test0.png")
 
 
