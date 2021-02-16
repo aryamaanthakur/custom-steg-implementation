@@ -4,7 +4,7 @@ import math
 
 def hide(img, msg, msg_end="#steg-end#"):
     width, height = img.size
-    msg+=msg_end
+    msg+=msg_end #using a string to determine the end of message while decoding
     msg_bin = "".join([f'{ord(i):08b}' for i in msg]) #converting ascii message to 8bit binary form
     msg_len = len(msg_bin)
     img_array = np.array(list(img.getdata())) #image as a continuous array of pixels
@@ -32,9 +32,9 @@ def hide(img, msg, msg_end="#steg-end#"):
     print("Image Encoded Successfully")
     return new_img
 
-#img = im.open("test.png", "r")
-#new_img = hide(img, "Hello World")
-#new_img.save("test0.png")
+img = im.open("test/test.png", "r")
+new_img = hide(img, "Hello cyberlabs")
+new_img.save("test/test0.png")
 
 
 
@@ -58,6 +58,6 @@ def unhide(img, msg_end="#steg-end#"):
     
     return ascii_msg[:-len(msg_end)]
 
-img = im.open("test0.png", "r")
+img = im.open("test/test0.png", "r")
 msg = unhide(img)
 print(msg)
