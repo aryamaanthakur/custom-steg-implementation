@@ -58,7 +58,7 @@ def extract(img_arr, channel_order, bit_start, bit_end, msg_len):
                 if c==msg_len: return hidden_msg
     return hidden_msg
 
-def analyse(img, bit_start, bit_end, msg_len=400):
+def analyse(img, bit_start, bit_end, msg_len=400, search=""):
     img_arr = np.array(img)
 
     channel_orders = []
@@ -81,11 +81,12 @@ def analyse(img, bit_start, bit_end, msg_len=400):
         channel_order = [img.mode.index(channel) for channel in test]
         bin_msg = extract(img_arr, channel_order, bit_start, bit_end, msg_len)
         ascii_msg = bin_to_ascii(bin_msg)
-        print("[+]", test, "-", ascii_msg)
+        if search in ascii_msg:
+            print("[+]", test, "-", ascii_msg)
 
 img = im.open("test/test0.png", "r")
 img_arr = np.array(img)
 bin_msg = extract(img_arr, [0,1,2,3], 7, 8, 500)
-print(bin_to_ascii(bin_msg))
+#print(bin_to_ascii(bin_msg))
 
-analyse(img, 7, 8, 500)
+analyse(img, 7, 8)
