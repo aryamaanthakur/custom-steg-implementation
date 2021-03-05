@@ -3,9 +3,13 @@ from PIL import Image as im
 from itertools import permutations
 
 def bin_to_ascii(bin_msg):
-    ascii_msg = ""
+    ascii_msg = bytearray()
     for i in range(0, len(bin_msg), 8):
-        ascii_msg += chr(int(bin_msg[i:i+8], 2))
+        x = int(bin_msg[i:i+8], 2)
+        if x in range(30,127):
+            ascii_msg.append(x)
+        else:
+            ascii_msg.append(63)
 
     return ascii_msg
 
@@ -58,7 +62,7 @@ new_img.save("test/test0.png")
 
 
 def extract(img_arr, channel_order, bit_start, bit_end, msg_len):
-    hidden_msg = ""
+    hidden_msg = "" #make by
     height, width, z = img_arr.shape
     bit_len=bit_end-bit_start
     c = 0
@@ -71,7 +75,7 @@ def extract(img_arr, channel_order, bit_start, bit_end, msg_len):
 
     return hidden_msg
 
-def analyse(img, bit_start, bit_end, msg_len=400, search=""):
+def analyse(img, bit_start, bit_end, msg_len=400, search=b""):
     img_arr = np.array(img)
 
     channel_orders = []
@@ -100,11 +104,11 @@ def analyse(img, bit_start, bit_end, msg_len=400, search=""):
         bin_msg = extract(img_arr, channel_order, bit_start, bit_end, msg_len)
         ascii_msg = bin_to_ascii(bin_msg)
         if search in ascii_msg:
-            print("[+]", test, "-", ascii_msg)
+            print("[+]", test, "-", ascii_msg.decode())
 
 img = im.open("test/test0.png", "r")
 img_arr = np.array(img)
 #bin_msg = extract(img_arr, [0,1,2], 7, 8, 500)
 #print(bin_to_ascii(bin_msg))
 
-analyse(img, 6, 8, 400)
+analyse(img, 6, 8, 500, b"What")
