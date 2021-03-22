@@ -34,37 +34,40 @@ def slice(img_arr, channel, bit_index):
             except IndexError:
                 pass
 
-    new_image.save(r"test/bitplane/{}{}.png".format("RGBA"[channel], bit_index))
+    new_image.save(r"bitplane-temp/{}{}.png".format("RGBA"[channel], bit_index))
     print("[+] {}{} Done!".format("RGBA"[channel], bit_index))
 
 def analyse():
     
     t1 = time.time()
 
-    image_names=glob.glob('test\\bitplane\\*.png')
+    image_names=glob.glob('bitplane-temp\\*.png')
     for i in image_names:
         if os.path.exists(i):
             os.remove(i)
 
     location = openfilename()
 
+    if location == "":
+        print("[-] No file selected for performing operations")
+        return None
     img = im.open(location, "r")
     width, height = img.size
     if width <= height:
         ratio = 500/height
     else:
-        ratio = 700/width
+        ratio = 600/width
     
     display_height = int(ratio*height)
     display_width = int(ratio*width)
 
     root.geometry("{}x{}".format(display_width+20, display_height+50))
-    print(display_width, display_height)
-    img.save("test\\bitplane\\0.png")
+    #print(display_width, display_height)
+    img.save("bitplane-temp\\0.png")
     #tk_img = ImageTk.PhotoImage(img)
     
     img_arr = np.array(img)
-    print(img_arr.shape)
+    #print(img_arr.shape)
 
     if img.mode == "RGBA":
         n=4
@@ -101,10 +104,10 @@ def analyse():
         thread.join() """
 
     t2 = time.time()
-    print("Time taken for execution with multiprocessing", t2-t1, "seconds")
+    print("\n[+] Time taken for completion:", t2-t1, "seconds")
 
-    image_names=glob.glob('test\\bitplane\\*.png')
-    print(image_names)
+    image_names=glob.glob('bitplane-temp\\*.png')
+    #print(image_names)
     img = im.open(image_names[0])
     img = img.resize((display_width, display_height), im.NEAREST)
     tk_img = ImageTk.PhotoImage(img)
@@ -124,8 +127,7 @@ def analyse():
         tk_img = ImageTk.PhotoImage(img)
         panel.configure(image=tk_img)
         panel.image = tk_img
-        print(index)
-        print(image_names[index])
+        print("[+] Viewing",plane_names[index])
         image_name_label.config(text=plane_names[index])
 
     def show_next_image():
@@ -139,25 +141,39 @@ def analyse():
         tk_img = ImageTk.PhotoImage(img)
         panel.configure(image=tk_img)
         panel.image = tk_img
-        print(index)
-        print(image_names[index])
+        print("[+] Viewing",plane_names[index])
         image_name_label.config(text=plane_names[index])
 
     prev_btn = Button(root,text="Prev",command=show_prev_image).place(x=100, y=10)
     next_btn = Button(root,text="Next",command=show_next_image).place(x=140, y=10)
     
+    save_btn = Button(root, text = 'Save Plane', command= lambda: saveimage(image_names[index])).place(x=240, y=10)
+
 def openfilename(): 
     filename = filedialog.askopenfilename(title = "Open") 
     return filename
 
+def saveimage(img_location):
+    files = [("PNG File", '*.png')]
+    filename = filedialog.asksaveasfile(filetypes = files, defaultextension = files)
+    if filename=="":
+        print("[-] No location selected for saving")
+        return None
+    print("[+] Saving current plane at", filename.name)
+    img = im.open(img_location)
+    img.save(filename.name)
 
 if __name__ == "__main__":
     #location = r"test/bitplane.png"  
     #analyse(location)
-    
+    print("[+] Creating temporary folder named 'bitplane-temp'")
+
+    if not os.path.exists('bitplane-temp'):
+        os.makedirs('bitplane-temp')
+
     root = Tk()
     root.title("RGB Bit Plane Slicing")
-    root.geometry("800x600") 
+    root.geometry("300x150") 
     root.resizable(width = True, height = True)
 
     btn = Button(root, text ='Load Image', command = analyse).place(x=10, y=10)
@@ -170,8 +186,13 @@ if __name__ == "__main__":
     
     root.mainloop()
     
-    image_names=glob.glob('test\\bitplane\\*.png')
+    print("[+] Deleting temporary folder named 'bitplane-temp' and its content")
+
+    image_names=glob.glob('bitplane-temp\\*.png')
     for i in image_names:
         if os.path.exists(i):
             os.remove(i)
+
+    if os.path.exists('bitplane-temp'):
+        os.rmdir('bitplane-temp')
     
