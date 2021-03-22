@@ -49,6 +49,17 @@ def analyse():
     location = openfilename()
 
     img = im.open(location, "r")
+    width, height = img.size
+    if width <= height:
+        ratio = 500/height
+    else:
+        ratio = 700/width
+    
+    display_height = int(ratio*height)
+    display_width = int(ratio*width)
+
+    root.geometry("{}x{}".format(display_width+20, display_height+50))
+    print(display_width, display_height)
     img.save("test\\bitplane\\0.png")
     #tk_img = ImageTk.PhotoImage(img)
     
@@ -95,6 +106,7 @@ def analyse():
     image_names=glob.glob('test\\bitplane\\*.png')
     print(image_names)
     img = im.open(image_names[0])
+    img = img.resize((display_width, display_height), im.NEAREST)
     tk_img = ImageTk.PhotoImage(img)
     panel.configure(image=tk_img)
     panel.image = tk_img
@@ -108,6 +120,7 @@ def analyse():
             index = len(image_names)-1
         
         img = im.open(image_names[index])
+        img = img.resize((display_width, display_height), im.NEAREST)
         tk_img = ImageTk.PhotoImage(img)
         panel.configure(image=tk_img)
         panel.image = tk_img
@@ -122,6 +135,7 @@ def analyse():
         if index == len(image_names):
             index = 0
         img = im.open(image_names[index])
+        img = img.resize((display_width, display_height), im.NEAREST)
         tk_img = ImageTk.PhotoImage(img)
         panel.configure(image=tk_img)
         panel.image = tk_img
@@ -143,7 +157,7 @@ if __name__ == "__main__":
     
     root = Tk()
     root.title("RGB Bit Plane Slicing")
-    root.geometry("550x300+300+150") 
+    root.geometry("800x600") 
     root.resizable(width = True, height = True)
 
     btn = Button(root, text ='Load Image', command = analyse).place(x=10, y=10)
