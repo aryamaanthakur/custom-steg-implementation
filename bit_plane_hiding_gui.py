@@ -3,6 +3,8 @@ from PIL import Image as im
 
 from tkinter import *
 from tkinter import filedialog
+from tkinter import messagebox
+
 import os
 
 def slice(img_arr, channel, bit_index):
@@ -47,12 +49,13 @@ def openhostimage():
     global host_image_location
     filename = filedialog.askopenfilename(title = "Open") 
     host_image_location = filename
+    host_img_label.configure(text=host_image_location)
 
 def opensecretimage():
     global secret_image_location
     filename = filedialog.askopenfilename(title = "Open") 
     secret_image_location = filename
-
+    secret_img_label.configure(text=secret_image_location)
 
 def saveimage(host_image_location, secret_image_location, bit_plane_index):
     files = [("PNG File", '*.png')]
@@ -61,8 +64,11 @@ def saveimage(host_image_location, secret_image_location, bit_plane_index):
         print("[-] No location selected for saving")
         return None
     
-    if (secret_image_location=="") or (host_image_location==""):
-        print("[-] Load images first")
+    if (secret_image_location==""):
+        messagebox.showerror("Error", "Image to hide not selected") 
+        return None
+    if (host_image_location==""):
+        messagebox.showerror("Error", "Host Image not selected") 
         return None
 
     secret_img = im.open(secret_image_location)
@@ -72,16 +78,17 @@ def saveimage(host_image_location, secret_image_location, bit_plane_index):
     host_img_size = host_img.size
 
     if (secret_img_size[0]>host_img_size[0]) or (secret_img_size[1]>host_img_size[1]):
-        print("[-] File too big too hide")
+        messagebox.showerror("Error", "File size too big to hide, select a larger host image or smaller secret image") 
         return None
     
     if bit_plane_index[0] not in host_img.mode:
-        print("[-] Selected plane not in host image, please select other plane")
+        messagebox.showerror("Error", "Selected plane not in host, select other plane") 
         return None
     
     img = hide(host_img, secret_img, bit_plane_index)
     img.save(filename.name)
 
+    messagebox.showinfo("Succesful", "Secret image hidden in host successfully") 
 if __name__ == "__main__":
 
     host_image_location = ""
@@ -99,7 +106,7 @@ if __name__ == "__main__":
 
     root = Tk()
     root.title("RGB Bit Plane Hiding")
-    root.geometry("300x180") 
+    root.geometry("400x180") 
     root.resizable(width = True, height = True)
 
     host_img_btn = Button(root, text ='Load Host Image', command = openhostimage).place(x=10, y=10)
@@ -113,9 +120,9 @@ if __name__ == "__main__":
     hide_button = Button(root, text="Hide", command = lambda: saveimage(host_image_location, secret_image_location, 
     bit_plane_indices[bit_plane_names.index(bit_plane.get())])).place(x=10, y=130)
 
-    host_img_label = Label(root, text="A").place(x=140, y=15)
-    secret_img_label = Label(root, text="A").place(x=140, y=55)
+    host_img_label = Label(root, text="")
+    host_img_label.place(x=140, y=15)
+    secret_img_label = Label(root, text="")
+    secret_img_label.place(x=140, y=55)
     
     root.mainloop()
-    print(bit_plane.get())
-    
