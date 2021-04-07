@@ -26,16 +26,19 @@ def hide(image_location, text_location):
     
     if image_location == "":
         print("[-] Image not selected")
+        messagebox.showerror("Error", "Image not selected") 
         return None
     
     if text_location == "":
         print("[-] Text file not selected")
+        messagebox.showerror("Error", "Test file not selected") 
         return None
 
     files = [("PNG File", '*.png'), ("JPG File", '*.jpg')]
     filename = filedialog.asksaveasfile(filetypes = files, defaultextension = files)
     if filename == None:
-        print("[-] No location selected for saving")
+        print("[-] No location selected for saving image")
+        messagebox.showerror("Error", "No location selected for saving new image") 
         return None
 
     with open(text_location) as file:
@@ -92,6 +95,7 @@ def hide(image_location, text_location):
     new_img.save(filename.name)
 
     print("Image Encoded Successfully")
+    messagebox.showinfo("Succesful", "Image Encoded Successfully")
 
 #image_location = "test\\flag.png"
 #hide(image_location, data, password)
@@ -100,12 +104,14 @@ def unhide(image_location):
 
     if image_location == "":
         print("[-] Image not selected")
+        messagebox.showerror("Error", "Image not selected") 
         return None
 
     files = [("Text File", '*.txt')]
     filename = filedialog.asksaveasfile(filetypes = files, defaultextension = files)
     if filename == None:
         print("[-] No location selected for saving")
+        messagebox.showerror("Error", "No location selected for saving") 
         return None
 
     img = im.open(image_location)
@@ -155,10 +161,14 @@ def unhide(image_location):
         f.write(deciphered_data)
 
     print("[+] Image Decoded Successfully")
+    messagebox.showinfo("Succesful", "Image Decoded Successfully")
+
+
 def show(image_location):
 
     if image_location == "":
         print("[-] Image not selected")
+        messagebox.showerror("Error", "Image not selected") 
         return None
 
     img = im.open(image_location)
@@ -235,7 +245,7 @@ if __name__ == "__main__":
     text_location = ""
 
     root = Tk()
-    root.title("RGB Bit Plane Slicing")
+    root.title("Triple-A Steg Technique")
     root.geometry("300x230") 
     root.resizable(width = True, height = True)
 
