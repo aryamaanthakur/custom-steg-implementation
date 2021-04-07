@@ -21,52 +21,8 @@ def ascii_to_bin(ascii_msg):
 
     return bin_msg
 
-def hide(img, img_arr, channel_order, bit_start, bit_end, msg):
-
-    msg = ascii_to_bin(msg)
-    msg_len = len(msg)
-
-    height, width, z = img_arr.shape
-
-    max_msg_len = height*width*len(channel_order)*(bit_end-bit_start)
-
-    if max_msg_len < msg_len:
-        print("[-] Image not large enough to hide message in given channel order")
-        return None
-    
-    bit_len = bit_end-bit_start
-    index = 0
-    for x in range(height):
-        for y in range(width):
-            for z in channel_order:
-                curr_value = f'{img_arr[x,y,z]:08b}'
-                if bit_end==8:
-                    new_value = curr_value[0:bit_start]+msg[index:index+bit_len]
-                else:
-                    new_value = curr_value[0:bit_start]+msg[index:index+bit_len]+curr_value[bit_end:]
-
-                img_arr[x,y,z] = int(new_value,2)
-                index+=bit_len
-                
-                if index>=msg_len:
-                    new_img = im.fromarray(img_arr.astype('uint8'), img.mode)
-                    print("Image Encoded Successfully")
-                    return new_img
-
-    return new_img
-    
-#img = im.open("test/test.png", "r")
-
-""" if img.mode == "RGBA" or img.mode == "RGB":
-    img_arr = np.array(img)
-    new_img = hide(img, img_arr, [2,1,0], 6, 8, "Hello hello hello, this is cyberlabs! What up?")
-    new_img.save("test/test0.png")
-else:
-    print("[-] Invalid image mode! Please use an RGB/RGBA image")
- """
-
 def extract(img_arr, channel_order, bit_start, bit_end, msg_len):
-    hidden_msg = "" #make by
+    hidden_msg = ""
     height, width, z = img_arr.shape
     bit_len=bit_end-bit_start
     c = 0
@@ -96,10 +52,15 @@ def check_readability(b_string, min_readable_characters=0):
         return False
 
 def analyse(image_location, bit_start, bit_end):
+
     if image_location=="":
+        print("[-] Image not selected")
+        messagebox.showerror("Error", "Image not selected")
         return None
 
     if bit_start>=bit_end:
+        print("[-] Invalid Bit Range Selected")
+        messagebox.showerror("Error", "Invalid Bit Range Selected")
         return None
 
     img = im.open(image_location)
@@ -114,6 +75,8 @@ def analyse(image_location, bit_start, bit_end):
     if min_readable_characters == "":
         min_readable_characters = 0
     elif not min_readable_characters.isnumeric():
+        print("[-] Enter an integer in Continuous Readable Characters")
+        messagebox.showerror("Error", "Enter an integer in Continuous Readable Characters") 
         return None
     else:
         min_readable_characters = int(min_readable_characters)
@@ -122,6 +85,8 @@ def analyse(image_location, bit_start, bit_end):
     if msg_len == "":
         msg_len = 500
     elif not msg_len.isnumeric():
+        print("[-] Enter an integer in Number of bits to extract")
+        messagebox.showerror("Error", "Enter an integer in Number of bits to extract")
         return None
     else:
         msg_len = int(msg_len)
@@ -137,7 +102,8 @@ def analyse(image_location, bit_start, bit_end):
 	        for j in permutations("RGB", i):
 		        channel_orders.append("".join(j))
     else:
-        print("Invalid Image Mode")
+        print("[-] Invalid Image Mode")
+        messagebox.showerror("Error", "The image format is not supported")
         return None
 
     if bit_end-bit_start==1:
@@ -146,7 +112,8 @@ def analyse(image_location, bit_start, bit_end):
         print("[=] Checking from bit", bit_start+1, "to", bit_end, "\n")
 
     if search!=b"":
-        print("[=] Searching for keyword", search)
+        search_string = "".join(chr(i) for i in search)
+        print("[=] Searching for keyword", search_string)
 
     results_window = Toplevel(root)
     listbox = Listbox(results_window, width=80, height=10)
@@ -185,17 +152,22 @@ def openimage():
     image_location_label.configure(text=image_location)
     
 def savetxt(image_location, bit_start, bit_end, channels):
+    
+    if image_location=="":
+        print("[-] Image not selected")
+        messagebox.showerror("Error", "Image not selected") 
+        return None
+
+    if bit_start>=bit_end:
+        print("[-] Invalid Bit Range Selected")
+        messagebox.showerror("Error", "Invalid Bit Range Selected")
+        return None
 
     files = [("Text File", '*.txt')]
     filename = filedialog.asksaveasfile(filetypes = files, defaultextension = files)
     if filename==None:
+        messagebox.showerror("Error", "No location selected for saving")
         print("[-] No location selected for saving")
-        return None
-
-    if image_location=="":
-        return None
-
-    if bit_start>=bit_end:
         return None
         
     img = im.open(image_location)
@@ -205,6 +177,8 @@ def savetxt(image_location, bit_start, bit_end, channels):
     if msg_len == "":
         msg_len = 500
     elif not msg_len.isnumeric():
+        print("[-] Enter an integer in Number of bits to extract")
+        messagebox.showerror("Error", "Enter an integer in Number of bits to extract")
         return None
     else:
         msg_len = int(msg_len)
@@ -224,14 +198,19 @@ def savetxt(image_location, bit_start, bit_end, channels):
     with open(filename.name, "wb") as f:
         f.write(ascii_msg)
         print("[+] Data saved successfully")
+        messagebox.showinfo("Successful", "Data Saved Successfully")
 
 
 def unhide(image_location, bit_start, bit_end, channels):
     
     if image_location=="":
+        print("[-] Image not selected")
+        messagebox.showerror("Error", "Image not selected")
         return None
 
     if bit_start>=bit_end:
+        print("[-] Invalid Bit Range Selected")
+        messagebox.showerror("Error", "Invalid Bit Range Selected")
         return None
         
     img = im.open(image_location)
@@ -241,6 +220,8 @@ def unhide(image_location, bit_start, bit_end, channels):
     if msg_len == "":
         msg_len = 500
     elif not msg_len.isnumeric():
+        print("[-] Enter an integer in Number of bits to extract")
+        messagebox.showerror("Error", "Enter an integer in Number of bits to extract")
         return None
     else:
         msg_len = int(msg_len)
@@ -272,7 +253,7 @@ def unhide(image_location, bit_start, bit_end, channels):
     txt.pack(expand=True, fill='both')
     txt.insert(END,ascii_msg)
     txt.config(state=DISABLED)
-    print(ascii_msg)
+    print("[+]", ascii_msg)
     msg_window.mainloop()
 
 
@@ -291,7 +272,7 @@ if __name__ == "__main__":
 
     bits = [1, 2, 3, 4, 5, 6, 7, 8]
     root = Tk()
-    root.title("RGB Bit Plane Slicing")
+    root.title("LSB Steg")
     root.geometry("300x350") 
     root.resizable(width = True, height = True)
 

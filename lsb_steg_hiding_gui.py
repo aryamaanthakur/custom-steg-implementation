@@ -21,19 +21,25 @@ def ascii_to_bin(ascii_msg):
 
 def hide(image_location, text_location, channels, bit_start, bit_end):
 
+    if image_location=="":
+        print("[-] Image not selected")
+        messagebox.showerror("Error", "Image not selected")
+        return None
+        
+    if text_location=="":
+        print("[-] Text not selected")
+        messagebox.showerror("Error", "Text not selected")
+        return None
+
+    if bit_start>=bit_end:
+        print("[-] Invalid Bit Range Selected")
+        messagebox.showerror("Error", "Invalid Bit Range Selected")
+        return None
+
     files = [("PNG File", '*.png')]
     filename = filedialog.asksaveasfile(filetypes = files, defaultextension = files)
     if filename==None:
         print("[-] No location selected for saving")
-        return None
-
-    if text_location=="":
-        return None
-
-    if image_location=="":
-        return None
-
-    if bit_start>=bit_end:
         return None
     
     img = im.open(image_location)
@@ -50,7 +56,11 @@ def hide(image_location, text_location, channels, bit_start, bit_end):
     msg = open(text_location).read()
     msg = ascii_to_bin(msg)
     msg_len = len(msg)
-    msg+="00000000"
+    #msg+="00000000"
+    bit_len = bit_end-bit_start
+
+    msg+="0"*(8-msg_len%bit_len)
+
     height, width, z = img_arr.shape
     max_msg_len = height*width*len(channel_order)*(bit_end-bit_start)
 
@@ -58,7 +68,6 @@ def hide(image_location, text_location, channels, bit_start, bit_end):
         print("[-] Image not large enough to hide message in given channel order")
         return None
     
-    bit_len = bit_end-bit_start
     index = 0
     for x in range(height):
         for y in range(width):
@@ -70,13 +79,14 @@ def hide(image_location, text_location, channels, bit_start, bit_end):
                 else:
                     new_value = curr_value[0:bit_start]+msg[index:index+bit_len]+curr_value[bit_end:]
 
-                print(curr_value, new_value)
+                #print(curr_value, new_value)
                 img_arr[x,y,z] = int(new_value,2)
                 index+=bit_len
                 
                 if index>=msg_len:
                     new_img = im.fromarray(img_arr.astype('uint8'), img.mode)
                     print("Image Encoded Successfully")
+                    messagebox.showinfo("Successful", "Image Encoded Successfully")
                     new_img.save(filename.name)
                     return None
 
@@ -110,7 +120,7 @@ if __name__ == "__main__":
 
     bits = [1, 2, 3, 4, 5, 6, 7, 8]
     root = Tk()
-    root.title("RGB Bit Plane Slicing")
+    root.title("LSB Steg")
     root.geometry("300x250") 
     root.resizable(width = True, height = True)
 
@@ -118,7 +128,7 @@ if __name__ == "__main__":
     image_location_label = Label(root, text="")
     image_location_label.place(x=100, y=15)
 
-    img_btn = Button(root, text="Load Text", command=opentext).place(x=10, y=50)
+    txt_btn = Button(root, text="Load Text", command=opentext).place(x=10, y=50)
     text_location_label = Label(root, text="")
     text_location_label.place(x=100, y=55)
 
