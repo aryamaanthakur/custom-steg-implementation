@@ -58,11 +58,6 @@ def opensecretimage():
     secret_img_label.configure(text=secret_image_location)
 
 def saveimage(host_image_location, secret_image_location, bit_plane_index):
-    files = [("PNG File", '*.png')]
-    filename = filedialog.asksaveasfile(filetypes = files, defaultextension = files)
-    if filename==None:
-        print("[-] No location selected for saving")
-        return None
     
     if (secret_image_location==""):
         messagebox.showerror("Error", "Image to hide not selected") 
@@ -85,10 +80,16 @@ def saveimage(host_image_location, secret_image_location, bit_plane_index):
         messagebox.showerror("Error", "Selected plane not in host, select other plane") 
         return None
     
+    files = [("PNG File", '*.png')]
+    filename = filedialog.asksaveasfile(filetypes = files, defaultextension = files)
+    if filename==None:
+        print("[-] No location selected for saving")
+        return None
+        
     img = hide(host_img, secret_img, bit_plane_index)
     img.save(filename.name)
 
-    messagebox.showinfo("Succesful", "Secret image hidden in host successfully") 
+    messagebox.showinfo("Successful", "Secret image hidden in host successfully") 
 if __name__ == "__main__":
 
     host_image_location = ""

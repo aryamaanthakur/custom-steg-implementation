@@ -37,7 +37,7 @@ def slice(img_arr, channel, bit_index):
     new_image.save(r"bitplane-temp/{}{}.png".format("RGBA"[channel], bit_index))
     print("[+] {}{} Done!".format("RGBA"[channel], bit_index))
 
-def analyse():
+def analyse(location):
     
     t1 = time.time()
 
@@ -46,11 +46,6 @@ def analyse():
         if os.path.exists(i):
             os.remove(i)
 
-    location = openfilename()
-
-    if location == "":
-        print("[-] No file selected for performing operations")
-        return None
     img = im.open(location, "r")
     width, height = img.size
     if width <= height:
@@ -121,7 +116,11 @@ def analyse():
         index-=1
         if index == -1:
             index = len(image_names)-1
-        
+
+        if not os.path.exists(image_names[index]):
+            print("[-] Image does not exist, load image again")
+            return None
+
         img = im.open(image_names[index])
         img = img.resize((display_width, display_height), im.NEAREST)
         tk_img = ImageTk.PhotoImage(img)
@@ -136,6 +135,9 @@ def analyse():
         index+=1
         if index == len(image_names):
             index = 0
+        if not os.path.exists(image_names[index]):
+            print("[-] Image does not exist, load image again")
+            return None
         img = im.open(image_names[index])
         img = img.resize((display_width, display_height), im.NEAREST)
         tk_img = ImageTk.PhotoImage(img)
@@ -151,12 +153,15 @@ def analyse():
 
 def openfilename(): 
     filename = filedialog.askopenfilename(title = "Open") 
-    return filename
+    if filename != "":
+        analyse(filename)
+    else:
+        print("[-] No image selected for performing operations")
 
 def saveimage(img_location):
     files = [("PNG File", '*.png')]
     filename = filedialog.asksaveasfile(filetypes = files, defaultextension = files)
-    if filename=="":
+    if filename==None:
         print("[-] No location selected for saving")
         return None
     print("[+] Saving current plane at", filename.name)
@@ -176,7 +181,7 @@ if __name__ == "__main__":
     root.geometry("300x150") 
     root.resizable(width = True, height = True)
 
-    btn = Button(root, text ='Load Image', command = analyse).place(x=10, y=10)
+    btn = Button(root, text ='Load Image', command = openfilename).place(x=10, y=10)
 
     panel = Label(root, image = None)
     panel.place(x=10, y=40)
