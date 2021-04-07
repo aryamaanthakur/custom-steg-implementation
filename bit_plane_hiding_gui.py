@@ -104,6 +104,9 @@ if __name__ == "__main__":
                          ('B',0),('B',1),('B',2),('B',3),('B',4),('B',5),('B',6),('B',7),
                          ('A',0),('A',1),('A',2),('A',3),('A',4),('A',5),('A',6),('A',7),]
 
+    channel_names = ["Red", "Blue", "Green", "Alpha"]
+    bit_positions = [0, 1, 2, 3, 4, 5, 6, 7]
+
     root = Tk()
     root.title("RGB Bit Plane Hiding")
     root.geometry("400x180") 
@@ -112,13 +115,20 @@ if __name__ == "__main__":
     host_img_btn = Button(root, text ='Load Host Image', command = openhostimage).place(x=10, y=10)
     secret_img_btn = Button(root, text ='Load Image to hide', command = opensecretimage).place(x=10, y=50)
 
-    bit_plane = StringVar(root)
-    bit_plane.set(bit_plane_names[0])
-    bit_plane_dropdown = OptionMenu(root, bit_plane, *bit_plane_names).place(x=10, y=90)
+    channel = StringVar(root)
+    bit_position = IntVar(root)
+
+    channel.set(channel_names[0])
+    bit_position.set(bit_positions[0])
+    channel_dropdown = OptionMenu(root, channel, *channel_names).place(x=90, y=90)
+    bit_position_dropdown = OptionMenu(root, bit_position, *bit_positions).place(x=280, y=90)
+
+    channel_label = Label(root, text="Select plane:").place(x=10, y=95)
+    bit_position_label = Label(root, text = "Select Bit Position:").place(x=170, y=95)
     #bit_plane_index = bit_plane_indices[bit_plane_names.index(bit_plane.get())]
 
     hide_button = Button(root, text="Hide", command = lambda: saveimage(host_image_location, secret_image_location, 
-    bit_plane_indices[bit_plane_names.index(bit_plane.get())])).place(x=10, y=130)
+    (channel.get()[0], bit_position.get()))).place(x=10, y=130) #bit_plane_indices[bit_plane_names.index(bit_plane.get())]
 
     host_img_label = Label(root, text="")
     host_img_label.place(x=140, y=15)
