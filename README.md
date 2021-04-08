@@ -88,4 +88,4 @@ Click on the **Load Image** button and select an image. Also select a text file 
 A new image-based steganography technique-called triple-A algorithm is proposed in this paper. It uses the same principle of LSB, where the secret is hidden in the least significant bits of the pixels, with more randomization in selection of the number of bits used and the color channels that are used. This randomization is expected to increase the security of the system and also increase the capacity. This technique can be applied to RGB images where each pixel is represented by three bytes to indicate the intensity of red, green, and blue in that pixel.
 
 ## Post WoC Task
-I will keep adding implementations of techniques to this project and fixing the bugs (if found) in future.
+I will keep adding implementations of more techniques to this project and fixing the bugs (if found) in future.
