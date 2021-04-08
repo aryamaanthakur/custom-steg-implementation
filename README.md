@@ -12,6 +12,8 @@ This project consists of 3 subparts :-
 
 `$ git clone https://github.com/aryamaanthakur/custom-steg-implementation.git`
 
+`$ cd custom-steg-implementation`
+
 `$ pip3 install -r requirements.txt`
 
 ## Usage
