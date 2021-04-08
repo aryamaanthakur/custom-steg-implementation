@@ -6,10 +6,11 @@ def bin_to_ascii(bin_msg):
     ascii_msg = bytearray()
     for i in range(0, len(bin_msg), 8):
         x = int(bin_msg[i:i+8], 2)
-        if x in range(30,127):
+        ascii_msg.append(x)
+        """ if x in range(30,127):
             ascii_msg.append(x)
         else:
-            ascii_msg.append(63)
+            ascii_msg.append(63) """
 
     return ascii_msg
 
@@ -56,9 +57,13 @@ def hide(img, img_arr, channel_order, bit_start, bit_end, msg):
     
 
 img = im.open("test/test.png", "r")
-img_arr = np.array(img)
-new_img = hide(img, img_arr, [2,3,1,0], 6, 8, "Hello hello hello, this is cyberlabs! What up?")
-new_img.save("test/test0.png")
+
+if img.mode == "RGBA" or img.mode == "RGB":
+    img_arr = np.array(img)
+    new_img = hide(img, img_arr, [2,1,0], 6, 8, "Hello hello hello, What up?")
+    new_img.save("test/test0.png")
+else:
+    print("[-] Invalid image mode! Please use an RGB/RGBA image")
 
 
 def extract(img_arr, channel_order, bit_start, bit_end, msg_len):
@@ -75,7 +80,23 @@ def extract(img_arr, channel_order, bit_start, bit_end, msg_len):
 
     return hidden_msg
 
-def analyse(img, bit_start, bit_end, msg_len=400, search=b""):
+def check_readability(b_string, min_readable_characters=5):
+    max_readable_characters = 0
+    current_max = 0
+
+    for i in b_string:
+        if i in range(30,127):
+            current_max+=1
+        else:
+            if max_readable_characters < current_max:
+                max_readable_characters = current_max
+
+    if max_readable_characters >= min_readable_characters:
+        return True
+    else:
+        return False
+
+def analyse(img, bit_start, bit_end, msg_len=400, search=b"", min_readable_characters=0):
     img_arr = np.array(img)
 
     channel_orders = []
@@ -103,12 +124,12 @@ def analyse(img, bit_start, bit_end, msg_len=400, search=b""):
         channel_order = [img.mode.index(channel) for channel in test]
         bin_msg = extract(img_arr, channel_order, bit_start, bit_end, msg_len)
         ascii_msg = bin_to_ascii(bin_msg)
-        if search in ascii_msg:
-            print("[+]", test, "-", ascii_msg.decode())
-
+        if (search in ascii_msg) and check_readability(ascii_msg, min_readable_characters):
+            print("[+]", test, "-", "".join(map(chr, ascii_msg)))
+            #print("[+]", test, "-", ascii_msg)
 img = im.open("test/test0.png", "r")
 img_arr = np.array(img)
 #bin_msg = extract(img_arr, [0,1,2], 7, 8, 500)
 #print(bin_to_ascii(bin_msg))
 
-analyse(img, 6, 8, 500, b"What")
+analyse(img, 6, 8, 500, b"", 20)

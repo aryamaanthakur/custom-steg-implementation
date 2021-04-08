@@ -65,7 +65,7 @@ def analyse(location):
         thread.join() """
 
 if __name__ == "__main__":
-    location = r"test/bitplane.png"
+    location = r"test/bitplane-small.png"
 
     t1 = time.time()  
     analyse(location)
