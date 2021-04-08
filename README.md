@@ -20,7 +20,7 @@ This project consists of 3 subparts :-
 
 ### Least Significant Bit Steganography
 
-`$ python3 lsb_steg_hiding.py`
+`$ python3 csi.py lsbh`
 
 Click on the **Load Image** button and select a PNG/JPG image. Now select a TXT file which contains the data to be hidden by clicking on the **Load Text** button.
 
@@ -32,7 +32,7 @@ Select the **Channel Order** in which you want to hide the text. Make sure to se
 
 Clicking on the **Hide** button will ask for the location and name of new image.
 
-`$ python3 lsb_steg_gui.py`
+`$ python3 csi.py lsbu`
 
 #### Analyse
 This will display the results obtained from all the channels and specified bit range.
@@ -49,7 +49,7 @@ This will save the data obtained from a particular channel order and bit range a
 
 ### RGB Bit Plane Slicing
 
-`python3 bit_plane_slicing_gui.py`
+`python3 csi.py bps`
 
 **Load** an image and wait (it takes time to process large images but it will work for sure).
 Once all the bitplanes are generated you can navigate between them using the **Next** and **Prev** buttons.
@@ -61,7 +61,7 @@ You can also save a particular plane with the **Save Plane** button.
 
 *Tip: The planes are stored in a temporary folder created in the same directory, you can view the images directly from that folder too in full resolution.*
 
-`python3 bit_plane_hiding_gui.py`
+`python3 csi.py bph`
 
 Select the respective images by clicking on the buttons and browsing to a location. Make sure the image to be hidden is smaller than host image in dimensions or you'll receive a warning.
 
@@ -75,7 +75,7 @@ This is an implementation of following research paper, the abstract is also ment
 
 [Gutub, Adnan & Al-Qahtani, Ayed & Tabakh, Abdulaziz. (2009). Triple-A: Secure RGB Image Steganography Based on Randomization. 400 - 403. 10.1109/AICCSA.2009.5069356.](https://www.researchgate.net/publication/224503189_Triple-A_Secure_RGB_Image_Steganography_Based_on_Randomization)
 
-`$ python3 triple_A_gui.py`
+`$ python3 csi.py triplea`
 
 Click on the **Load Image** button and select an image. Also select a text file using the **Load Text** button only if you want to use the hide option.
 
@@ -88,4 +88,4 @@ Click on the **Load Image** button and select an image. Also select a text file 
 A new image-based steganography technique-called triple-A algorithm is proposed in this paper. It uses the same principle of LSB, where the secret is hidden in the least significant bits of the pixels, with more randomization in selection of the number of bits used and the color channels that are used. This randomization is expected to increase the security of the system and also increase the capacity. This technique can be applied to RGB images where each pixel is represented by three bytes to indicate the intensity of red, green, and blue in that pixel.
 
 ## Post WoC Task
-I will rename the files so they are easier to use and remove the non-GUI implementations or convert them to working CLI programs using `argparse`.
+I will keep adding implementations of techniques to this project and fixing the bugs (if found) in future.
