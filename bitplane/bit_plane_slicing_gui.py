@@ -146,10 +146,10 @@ def analyse(location):
         print("[+] Viewing",plane_names[index])
         image_name_label.config(text=plane_names[index])
 
-    prev_btn = Button(root,text="Prev",command=show_prev_image).place(x=120, y=10)
-    next_btn = Button(root,text="Next",command=show_next_image).place(x=180, y=10)
+    prev_btn = Button(root,text="Prev",command=show_prev_image).place(x=120 - space_adjust*20, y=10)
+    next_btn = Button(root,text="Next",command=show_next_image).place(x=180 - space_adjust*40, y=10)
     
-    save_btn = Button(root, text = 'Save Plane', command= lambda: saveimage(image_names[index])).place(x=300, y=10)
+    save_btn = Button(root, text = 'Save Plane', command= lambda: saveimage(image_names[index])).place(x=300 - space_adjust*60, y=10)
 
 def openfilename(): 
     filename = filedialog.askopenfilename(title = "Open") 
@@ -171,6 +171,12 @@ def saveimage(img_location):
 if __name__ == "__main__":
     #location = r"test/bitplane.png"  
     #analyse(location)
+
+    if os.name == "nt":
+        space_adjust = 1
+    else:
+        space_adjust = 0
+
     print("[+] Creating temporary folder named 'bitplane-temp'")
 
     if not os.path.exists('bitplane-temp'):
@@ -187,7 +193,7 @@ if __name__ == "__main__":
     panel.place(x=10, y=40)
 
     image_name_label = Label(root, text="")
-    image_name_label.place(x=240, y=10)
+    image_name_label.place(x=240 - space_adjust*60, y=15)
     
     root.mainloop()
     

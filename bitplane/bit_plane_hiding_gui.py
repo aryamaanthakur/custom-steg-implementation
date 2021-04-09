@@ -92,6 +92,11 @@ def saveimage(host_image_location, secret_image_location, bit_plane_index):
     messagebox.showinfo("Successful", "Secret image hidden in host successfully") 
 if __name__ == "__main__":
 
+    if os.name == "nt":
+        space_adjust = 1
+    else:
+        space_adjust = 0
+
     host_image_location = ""
     secret_image_location = ""
 
@@ -121,8 +126,8 @@ if __name__ == "__main__":
 
     channel.set(channel_names[0])
     bit_position.set(bit_positions[0])
-    channel_dropdown = OptionMenu(root, channel, *channel_names).place(x=100, y=90)
-    bit_position_dropdown = OptionMenu(root, bit_position, *bit_positions).place(x=300, y=90)
+    channel_dropdown = OptionMenu(root, channel, *channel_names).place(x=100 - space_adjust*10, y=90)
+    bit_position_dropdown = OptionMenu(root, bit_position, *bit_positions).place(x=300 - space_adjust*20, y=90)
 
     channel_label = Label(root, text="Select plane:").place(x=10, y=95)
     bit_position_label = Label(root, text = "Select Bit Position:").place(x=170, y=95)
@@ -132,8 +137,8 @@ if __name__ == "__main__":
     (channel.get()[0], bit_position.get()))).place(x=10, y=130) #bit_plane_indices[bit_plane_names.index(bit_plane.get())]
 
     host_img_label = Label(root, text="")
-    host_img_label.place(x=160, y=15)
+    host_img_label.place(x=160 - space_adjust*20, y=15)
     secret_img_label = Label(root, text="")
-    secret_img_label.place(x=180, y=55)
+    secret_img_label.place(x=180 - space_adjust*40, y=55)
     
     root.mainloop()

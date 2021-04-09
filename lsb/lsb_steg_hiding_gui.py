@@ -106,6 +106,11 @@ def opentext():
 
 if __name__ == "__main__":
 
+    if os.name == "nt":
+        space_adjust = 1
+    else:
+        space_adjust = 0
+
     image_location = ""
     text_location = ""
 
@@ -126,16 +131,16 @@ if __name__ == "__main__":
 
     img_btn = Button(root, text="Load Image", command=openimage).place(x=10, y=10)
     image_location_label = Label(root, text="")
-    image_location_label.place(x=120, y=15)
+    image_location_label.place(x=120 - space_adjust*20, y=15)
 
     txt_btn = Button(root, text="Load Text", command=opentext).place(x=10, y=50)
     text_location_label = Label(root, text="")
-    text_location_label.place(x=120, y=55)
+    text_location_label.place(x=120 - space_adjust*20, y=55)
 
 
     channels = StringVar(root)
     channels.set(channel_names[0])
-    channels_dropdown = OptionMenu(root, channels, *channel_names).place(x=115, y=90)
+    channels_dropdown = OptionMenu(root, channels, *channel_names).place(x=115 - space_adjust*15, y=90)
 
     bit_start = IntVar(root)
     bit_end = IntVar(root)
@@ -143,8 +148,8 @@ if __name__ == "__main__":
     bit_start.set(8)
     bit_end.set(8)
 
-    bit_start_dropdown = OptionMenu(root, bit_start, *bits).place(x=75, y=130)
-    bit_end_dropdown = OptionMenu(root, bit_end, *bits).place(x=75, y=170)
+    bit_start_dropdown = OptionMenu(root, bit_start, *bits).place(x=75 - space_adjust*5, y=130)
+    bit_end_dropdown = OptionMenu(root, bit_end, *bits).place(x=75 - space_adjust*5, y=170)
 
     channels_label = Label(root, text="Channel Order: ").place(x=10, y=95)
     bit_start_label = Label(root, text="Bit Start: ").place(x=10, y=135)
