@@ -7,6 +7,8 @@ from tkinter import filedialog
 from tkinter import messagebox
 import tkinter.scrolledtext as scrolledtext
 
+import os
+
 def bin_to_ascii(bin_msg):
     ascii_msg = bytearray()
     for i in range(0, len(bin_msg), 8):
@@ -259,6 +261,11 @@ def unhide(image_location, bit_start, bit_end, channels):
 
 if __name__ == "__main__":
 
+    if os.name == "nt":
+        space_adjust = 1
+    else:
+        space_adjust = 0
+
     image_location = ""
 
     channel_names = ['R', 'G', 'B', 'A', 'RG', 'RB', 'RA', 'GR',
@@ -282,7 +289,7 @@ if __name__ == "__main__":
 
     channels = StringVar(root)
     channels.set(channel_names[0])
-    channels_dropdown = OptionMenu(root, channels, *channel_names).place(x=120, y=50)
+    channels_dropdown = OptionMenu(root, channels, *channel_names).place(x=120 - space_adjust*20, y=50)
 
     bit_start = IntVar(root)
     bit_end = IntVar(root)
@@ -290,8 +297,8 @@ if __name__ == "__main__":
     bit_start.set(8)
     bit_end.set(8)
 
-    bit_start_dropdown = OptionMenu(root, bit_start, *bits).place(x=75, y=90)
-    bit_end_dropdown = OptionMenu(root, bit_end, *bits).place(x=75, y=130)
+    bit_start_dropdown = OptionMenu(root, bit_start, *bits).place(x=75 - space_adjust*5, y=90)
+    bit_end_dropdown = OptionMenu(root, bit_end, *bits).place(x=75 - space_adjust*5, y=130)
 
     channels_label = Label(root, text="Channel Order: ").place(x=10, y=55)
     bit_start_label = Label(root, text="Bit Start: ").place(x=10, y=95)
@@ -299,18 +306,18 @@ if __name__ == "__main__":
 
     msg_len_label = Label(root, text="Number of bits to extract: ").place(x=10, y=175)
     msg_len_box = Text(root, height=1, width=12)
-    msg_len_box.place(x=190, y=175)
+    msg_len_box.place(x=190 - space_adjust*30, y=175)
 
     search_label = Label(root, text="Search keyword: ").place(x=10, y=215)
     search_box = Text(root, height=1, width=19)
-    search_box.place(x=130, y=215)
+    search_box.place(x=130 - space_adjust*20, y=215)
 
     readable_chars_label = Label(root, text="Continuous readable chars: ").place(x=10, y=255)
     readable_chars_box = Text(root, height=1, width=9)
-    readable_chars_box.place(x=200, y=255)
+    readable_chars_box.place(x=200 - space_adjust*10, y=255)
 
-    analyse_btn = Button(root, text="Analyse", command=lambda: analyse(image_location, bit_start.get()-1, bit_end.get())).place(x=80, y=300)
+    analyse_btn = Button(root, text="Analyse", command=lambda: analyse(image_location, bit_start.get()-1, bit_end.get())).place(x=80 - space_adjust*20, y=300)
     
-    save_btn = Button(root, text="Save", command=lambda: savetxt(image_location, bit_start.get()-1, bit_end.get(), channels.get())).place(x=165, y=300)
+    save_btn = Button(root, text="Save", command=lambda: savetxt(image_location, bit_start.get()-1, bit_end.get(), channels.get())).place(x=165 - space_adjust*40, y=300)
     unhide_btn = Button(root, text="Show", command=lambda: unhide(image_location, bit_start.get()-1, bit_end.get(), channels.get())).place(x=10, y=300)
     root.mainloop()

@@ -9,6 +9,8 @@ from tkinter import filedialog
 from tkinter import messagebox
 import tkinter.scrolledtext as scrolledtext
 
+import os
+
 def Encrypt(data, key):
     cipher_encrypt = AES.new(key, AES.MODE_CFB, iv=key[:16])
     ciphered_bytes = cipher_encrypt.encrypt(data)
@@ -241,6 +243,11 @@ def opentext():
 
 if __name__ == "__main__":
 
+    if os.name == "nt":
+        space_adjust = 1
+    else:
+        space_adjust = 0
+
     image_location = ""
     text_location = ""
 
@@ -251,30 +258,30 @@ if __name__ == "__main__":
 
     img_btn = Button(root, text="Load Image", command=openimage).place(x=10, y=10)
     image_location_label = Label(root, text="")
-    image_location_label.place(x=120, y=15)
+    image_location_label.place(x=120 - space_adjust*20, y=15)
 
     txt_btn = Button(root, text="Load Text", command=opentext).place(x=10, y=50)
     text_location_label = Label(root, text="")
-    text_location_label.place(x=120, y=55)
+    text_location_label.place(x=120 - space_adjust*20, y=55)
 
     number_of_cycles = IntVar(root)
     cycles_label = Label(root, text="Enter number of cycles to perform: ")
     cycles_label.place(x=10, y=95)
     cycles_textbox = Text(root, height=1, width=7)
-    cycles_textbox.place(x=250, y=95)
+    cycles_textbox.place(x=250 - space_adjust*40, y=95)
 
     password_label = Label(root, text="Password:")
     password_label.place(x=10, y=135)
     password_textbox = Text(root, height=1, width=15)
-    password_textbox.place(x=100, y=135)
+    password_textbox.place(x=100 - space_adjust*20, y=135)
 
     hide_btn = Button(root, text="Hide", command= lambda: hide(image_location, text_location))
     hide_btn.place(x=10, y=175)
 
     unhide_btn = Button(root, text="Unhide & Save", command= lambda: unhide(image_location))
-    unhide_btn.place(x=70, y=175)
+    unhide_btn.place(x=70 - space_adjust*10, y=175)
     
     show_btn = Button(root, text="Show", command= lambda: show(image_location))
-    show_btn.place(x=200, y=175)
+    show_btn.place(x=200 - space_adjust*40, y=175)
 
     root.mainloop()
