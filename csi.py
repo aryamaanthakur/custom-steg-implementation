@@ -2,8 +2,33 @@ import argparse
 import os
 #if __name__ == "__main__":
     
-help_text = "This is help"
-parser = argparse.ArgumentParser()
+help_text = """      ___           ___                 
+     /  /\         /  /\        ___     
+    /  /:/        /  /:/_      /  /\    
+   /  /:/        /  /:/ /\    /  /:/    
+  /  /:/  ___   /  /:/ /::\  /__/::\    
+ /__/:/  /  /\ /__/:/ /:/\:\ \__\/\:\__ 
+ \  \:\ /  /:/ \  \:\/:/~/:/    \  \:\/\\
+  \  \:\  /:/   \  \::/ /:/      \__\::/
+   \  \:\/:/     \__\/ /:/       /__/:/ 
+    \  \::/        /__/:/        \__\/  
+     \__\/         \__\/                
+                                              
+
+A custom steganography implementation for RGB bit plane, Least Significant Bit (LSB)
+and Triple-A steganography.
+
+Use the following arguments to open corresponding applications:
+
+    bph : Bit Plane Hiding
+    bps : Bit Plane Slicing
+    lsbh : LSB Hiding
+    lsbu : LSB Unhiding
+    triplea: Triple-A Steganography
+
+Visit https://github.com/aryamaanthakur/custom-steg-implementation for more help."""
+
+parser = argparse.ArgumentParser(description = help_text, formatter_class=argparse.RawTextHelpFormatter)
 parser.add_argument('command', choices = ['bph', 'bps', 'lsbh', 'lsbu', 'triplea'])
 
 args = parser.parse_args()
