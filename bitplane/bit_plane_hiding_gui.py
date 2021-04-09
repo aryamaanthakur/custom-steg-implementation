@@ -121,8 +121,8 @@ if __name__ == "__main__":
 
     channel.set(channel_names[0])
     bit_position.set(bit_positions[0])
-    channel_dropdown = OptionMenu(root, channel, *channel_names).place(x=90, y=90)
-    bit_position_dropdown = OptionMenu(root, bit_position, *bit_positions).place(x=280, y=90)
+    channel_dropdown = OptionMenu(root, channel, *channel_names).place(x=100, y=90)
+    bit_position_dropdown = OptionMenu(root, bit_position, *bit_positions).place(x=300, y=90)
 
     channel_label = Label(root, text="Select plane:").place(x=10, y=95)
     bit_position_label = Label(root, text = "Select Bit Position:").place(x=170, y=95)
@@ -132,8 +132,8 @@ if __name__ == "__main__":
     (channel.get()[0], bit_position.get()))).place(x=10, y=130) #bit_plane_indices[bit_plane_names.index(bit_plane.get())]
 
     host_img_label = Label(root, text="")
-    host_img_label.place(x=140, y=15)
+    host_img_label.place(x=160, y=15)
     secret_img_label = Label(root, text="")
-    secret_img_label.place(x=140, y=55)
+    secret_img_label.place(x=180, y=55)
     
     root.mainloop()

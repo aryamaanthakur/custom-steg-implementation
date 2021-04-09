@@ -41,7 +41,7 @@ def analyse(location):
     
     t1 = time.time()
 
-    image_names=glob.glob('bitplane-temp\\*.png')
+    image_names=glob.glob('bitplane-temp/*.png')
     for i in image_names:
         if os.path.exists(i):
             os.remove(i)
@@ -58,7 +58,7 @@ def analyse(location):
 
     root.geometry("{}x{}".format(display_width+20, display_height+50))
     #print(display_width, display_height)
-    img.save("bitplane-temp\\0.png")
+    img.save("bitplane-temp/0.png")
     #tk_img = ImageTk.PhotoImage(img)
     
     img_arr = np.array(img)
@@ -101,7 +101,7 @@ def analyse(location):
     t2 = time.time()
     print("\n[+] Time taken for completion:", t2-t1, "seconds")
 
-    image_names=glob.glob('bitplane-temp\\*.png')
+    image_names=glob.glob('bitplane-temp/*.png')
     #print(image_names)
     img = im.open(image_names[0])
     img = img.resize((display_width, display_height), im.NEAREST)
@@ -146,10 +146,10 @@ def analyse(location):
         print("[+] Viewing",plane_names[index])
         image_name_label.config(text=plane_names[index])
 
-    prev_btn = Button(root,text="Prev",command=show_prev_image).place(x=100, y=10)
-    next_btn = Button(root,text="Next",command=show_next_image).place(x=140, y=10)
+    prev_btn = Button(root,text="Prev",command=show_prev_image).place(x=120, y=10)
+    next_btn = Button(root,text="Next",command=show_next_image).place(x=180, y=10)
     
-    save_btn = Button(root, text = 'Save Plane', command= lambda: saveimage(image_names[index])).place(x=240, y=10)
+    save_btn = Button(root, text = 'Save Plane', command= lambda: saveimage(image_names[index])).place(x=300, y=10)
 
 def openfilename(): 
     filename = filedialog.askopenfilename(title = "Open") 
@@ -187,13 +187,13 @@ if __name__ == "__main__":
     panel.place(x=10, y=40)
 
     image_name_label = Label(root, text="")
-    image_name_label.place(x=180, y=10)
+    image_name_label.place(x=240, y=10)
     
     root.mainloop()
     
     print("[+] Deleting temporary folder named 'bitplane-temp' and its content")
 
-    image_names=glob.glob('bitplane-temp\\*.png')
+    image_names=glob.glob('bitplane-temp/*.png')
     for i in image_names:
         if os.path.exists(i):
             os.remove(i)

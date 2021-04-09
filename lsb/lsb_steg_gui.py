@@ -278,11 +278,11 @@ if __name__ == "__main__":
 
     img_btn = Button(root, text="Load Image", command=openimage).place(x=10, y=10)
     image_location_label = Label(root, text="")
-    image_location_label.place(x=100, y=15)
+    image_location_label.place(x=120, y=15)
 
     channels = StringVar(root)
     channels.set(channel_names[0])
-    channels_dropdown = OptionMenu(root, channels, *channel_names).place(x=100, y=50)
+    channels_dropdown = OptionMenu(root, channels, *channel_names).place(x=120, y=50)
 
     bit_start = IntVar(root)
     bit_end = IntVar(root)
@@ -290,27 +290,27 @@ if __name__ == "__main__":
     bit_start.set(8)
     bit_end.set(8)
 
-    bit_start_dropdown = OptionMenu(root, bit_start, *bits).place(x=70, y=90)
-    bit_end_dropdown = OptionMenu(root, bit_end, *bits).place(x=70, y=130)
+    bit_start_dropdown = OptionMenu(root, bit_start, *bits).place(x=75, y=90)
+    bit_end_dropdown = OptionMenu(root, bit_end, *bits).place(x=75, y=130)
 
     channels_label = Label(root, text="Channel Order: ").place(x=10, y=55)
     bit_start_label = Label(root, text="Bit Start: ").place(x=10, y=95)
     bit_end_label = Label(root, text="Bit End: ").place(x=10, y=135)
 
     msg_len_label = Label(root, text="Number of bits to extract: ").place(x=10, y=175)
-    msg_len_box = Text(root, height=1, width=14)
-    msg_len_box.place(x=160, y=175)
+    msg_len_box = Text(root, height=1, width=12)
+    msg_len_box.place(x=190, y=175)
 
     search_label = Label(root, text="Search keyword: ").place(x=10, y=215)
-    search_box = Text(root, height=1, width=20)
-    search_box.place(x=110, y=215)
+    search_box = Text(root, height=1, width=19)
+    search_box.place(x=130, y=215)
 
-    readable_chars_label = Label(root, text="Continuous readable characters: ").place(x=10, y=255)
+    readable_chars_label = Label(root, text="Continuous readable chars: ").place(x=10, y=255)
     readable_chars_box = Text(root, height=1, width=9)
     readable_chars_box.place(x=200, y=255)
 
-    analyse_btn = Button(root, text="Analyse", command=lambda: analyse(image_location, bit_start.get()-1, bit_end.get())).place(x=60, y=300)
+    analyse_btn = Button(root, text="Analyse", command=lambda: analyse(image_location, bit_start.get()-1, bit_end.get())).place(x=80, y=300)
     
-    save_btn = Button(root, text="Save", command=lambda: savetxt(image_location, bit_start.get()-1, bit_end.get(), channels.get())).place(x=125, y=300)
+    save_btn = Button(root, text="Save", command=lambda: savetxt(image_location, bit_start.get()-1, bit_end.get(), channels.get())).place(x=165, y=300)
     unhide_btn = Button(root, text="Show", command=lambda: unhide(image_location, bit_start.get()-1, bit_end.get(), channels.get())).place(x=10, y=300)
     root.mainloop()
