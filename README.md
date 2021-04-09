@@ -16,6 +16,10 @@ This project consists of 3 subparts :-
 
 `$ pip3 install -r requirements.txt`
 
+**Note:** You may have to install tkinter exclusively on linux. Use the following command to do so
+
+`$ sudo apt-get install python3-tk`
+
 ## Usage
 
 ### Least Significant Bit Steganography
