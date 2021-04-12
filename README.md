@@ -10,7 +10,7 @@ This project consists of 3 subparts :-
 
 ## Installation
 
-`$ git clone https://github.com/aryamaanthakur/custom-steg-implementation.git`
+`$ git clone --depth 1 https://github.com/aryamaanthakur/custom-steg-implementation.git`
 
 `$ cd custom-steg-implementation`
 
