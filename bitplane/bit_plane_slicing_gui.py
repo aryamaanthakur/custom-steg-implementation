@@ -47,7 +47,16 @@ def analyse(location):
             os.remove(i)
 
     img = im.open(location, "r")
+
+    if img.mode == 'P':
+        img = img.convert("RGB")
+
+    if img.mode != "RGB" and img.mode != "RGBA":
+        print("[-] Invalid image mode supplied.")
+        return None
+
     width, height = img.size
+
     if width <= height:
         ratio = 500/height
     else:
@@ -99,7 +108,7 @@ def analyse(location):
         thread.join() """
 
     t2 = time.time()
-    print("\n[+] Time taken for completion:", t2-t1, "seconds")
+    print("\n[+] Time taken for completion:", round(t2-t1), "seconds")
 
     image_names=glob.glob('bitplane-temp/*.png')
     #print(image_names)
