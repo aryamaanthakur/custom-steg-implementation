@@ -111,6 +111,7 @@ def analyse(location):
     print("\n[+] Time taken for completion:", round(t2-t1), "seconds")
 
     image_names=glob.glob('bitplane-temp/*.png')
+    image_names.sort()
     #print(image_names)
     img = im.open(image_names[0])
     img = img.resize((display_width, display_height), im.NEAREST)
